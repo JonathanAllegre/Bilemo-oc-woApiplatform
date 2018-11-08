@@ -13,7 +13,7 @@ class ProductController extends AbstractController
     /**
      * @Rest\Get(
      *     path = "/products/{id}",
-     *     name = "app_article_show",
+     *     name = "app_product_show",
      *     requirements = {"id"="\d+"}
      * )
      * @Rest\View()
