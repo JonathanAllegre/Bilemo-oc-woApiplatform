@@ -12,7 +12,7 @@ class ProductController extends AbstractController
 
     /**
      * @Rest\Get(
-     *     path = "/products/{id}",
+     *     path = "/api/products/{id}",
      *     name = "app_product_show",
      *     requirements = {"id"="\d+"}
      * )
@@ -21,5 +21,21 @@ class ProductController extends AbstractController
     public function showAction(Product $product)
     {
         return $product;
+    }
+
+    /**
+     * @Rest\Get(
+     *     path = "/api/products",
+     *     name = "app_product_list",
+     * )
+     * @Rest\View(serializerGroups={"list"}))
+     */
+    public function listAction()
+    {
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+
+        return $products;
+
+        //TODO: pagination & representation
     }
 }

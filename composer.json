@@ -26,6 +26,7 @@
         "symfony/validator": "*",
         "symfony/web-link": "*",
         "symfony/yaml": "*",
+        "white-october/pagerfanta-bundle": "^1.2",
         "willdurand/hateoas-bundle": "^1.4"
     },
     "require-dev": {
