@@ -37,7 +37,7 @@ class ProductRepository extends ServiceEntityRepository
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
         $pager->setCurrentPage(2);
-        $pager->setMaxPerPage((int)5);
+        $pager->setMaxPerPage((int)30);
 
         return $pager;
     }
