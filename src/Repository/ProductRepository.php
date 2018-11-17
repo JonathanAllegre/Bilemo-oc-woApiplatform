@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,37 +17,48 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ProductRepository extends ServiceEntityRepository
 {
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Product::class);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function search()
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->select('a');
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->paginate($qb);
     }
-    */
+
+    protected function paginate(QueryBuilder $qb)
+    {
+
+        $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pager->setCurrentPage(2);
+        $pager->setMaxPerPage((int)5);
+
+        return $pager;
+    }
+
+
+//    public function getList()
+//    {
+//        $queryBuilder = $this
+//            ->createQueryBuilder('a')
+//            ->select('a');
+//
+//        $adapter = new DoctrineORMAdapter($queryBuilder);
+//        $pagerfanta = new Pagerfanta($adapter);
+//
+//        $pagerfanta->setMaxPerPage(5);
+//        $pagerfanta->setCurrentPage(2);
+//
+//        dump($pagerfanta->getNbPages());
+//        dump($pagerfanta->getCurrentPage());
+//        dd($pagerfanta->getCurrentPageResults());
+//    }
+
+
 }

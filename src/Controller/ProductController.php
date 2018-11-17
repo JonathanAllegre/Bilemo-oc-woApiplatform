@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Representation\Products;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,13 +29,19 @@ class ProductController extends AbstractController
      *     path = "/api/products",
      *     name = "app_product_list",
      * )
-     * @Rest\View(serializerGroups={"list"}))
+     * @Rest\View()
      */
     public function listAction()
     {
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $pager = $this
+            ->getDoctrine()
+            ->getRepository(Product::class)
+            ->search();
 
-        return $products;
+        //$products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+
+        return new Products($pager);
+        //return $pager->getCurrentPageResults();
 
         //TODO: pagination & representation
     }

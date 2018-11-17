@@ -3,22 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  *
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  *
- * @Hateoas\Relation(
- *      "self",
- *      href = @Hateoas\Route(
- *          "app_product_show",
- *          parameters = { "id" = "expr(object.getId())" },
- *          absolute=true,
- *      ),
- *     exclusion = @Hateoas\Exclusion(groups = {"list", "detail"})
- * )
+ * @Serializer\ExclusionPolicy("all")
+ * @ORM\Table()
+ *
  */
 class Product
 {
@@ -26,6 +19,7 @@ class Product
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -56,7 +50,8 @@ class Product
     /**
      * @var
      * @ORM\Column(type="string", length=255)
-     * @Serializer\Groups({"list"})
+     * @Serializer\Expose()
+     *
      */
     private $name;
 
