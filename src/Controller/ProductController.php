@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Representation\Products;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use Hateoas\Hateoas;
 use Hateoas\HateoasBuilder;
 use Hateoas\Representation\CollectionRepresentation;
@@ -33,18 +34,42 @@ class ProductController extends AbstractController
      *     path = "/api/products",
      *     name = "app_product_list",
      * )
+     *
+     * @Rest\QueryParam(
+     *     name="order",
+     *     requirements="asc|desc",
+     *     default="asc",
+     *     description="Sort Order (asc or desc)"
+     * )
+     *
+     * @Rest\QueryParam(
+     *     name="limit",
+     *     requirements="\d+",
+     *     default="5",
+     *     description="Max number of products per page"
+     * )
+     *
+     *
+     * @Rest\QueryParam(
+     *     name="page",
+     *     requirements="\d+",
+     *     default="1",
+     *     description="The page number"
+     * )
+     *
      * @Rest\View()
+     *
      */
-    public function listAction()
+    public function listAction(ParamFetcherInterface $paramFetcher)
     {
         $pager = $this
             ->getDoctrine()
             ->getRepository(Product::class)
-            ->search();
-
-        $results = $pager->getCurrentPageResults();
-
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+            ->search(
+                $paramFetcher->get('limit'),
+                $paramFetcher->get('order'),
+                $paramFetcher->get('page')
+            );
 
         $paginatedCollection = new PaginatedRepresentation(
             new CollectionRepresentation(
@@ -60,13 +85,8 @@ class ProductController extends AbstractController
             'page',  // page route parameter name, optional, defaults to 'page'
             'limit', // limit route parameter name, optional, defaults to 'limit'
             true,   // generate relative URIs, optional, defaults to `false`
-            $pager->getNbResults()      // total collection size, optional, defaults to `null`
+            $pager->getNbResults()   // total collection size, optional, defaults to `null`
         );
-
-        $json = $this->get('serializer')->serialize($paginatedCollection, 'json');
-        //$json = $hateoas->serialize($paginatedCollection, 'json');
-        //$xml  = $hateoas->serialize($paginatedCollection, 'xml');
-
 
         return $paginatedCollection;
 

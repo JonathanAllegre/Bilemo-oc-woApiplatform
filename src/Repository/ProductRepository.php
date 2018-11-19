@@ -23,21 +23,24 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function search()
+    public function search(int $limit, string $order, int $page)
     {
+
         $qb = $this
             ->createQueryBuilder('a')
-            ->select('a');
+            ->select('a')
+            ->orderBy('a.id', $order);
 
-        return $this->paginate($qb);
+        return $this->paginate($qb, $limit, $page);
     }
 
-    protected function paginate(QueryBuilder $qb)
+    protected function paginate(QueryBuilder $qb, int $limit, int $page)
     {
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
-        $pager->setCurrentPage(2);
-        $pager->setMaxPerPage((int)30);
+        $pager->setAllowOutOfRangePages(true);
+        $pager->setCurrentPage($page);
+        $pager->setMaxPerPage($limit);
 
         return $pager;
     }
