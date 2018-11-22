@@ -38,14 +38,14 @@ class ProductController extends AbstractController
      * @Rest\QueryParam(
      *     name="order",
      *     requirements="asc|desc",
-     *     default="asc",
+     *     default="desc",
      *     description="Sort Order (asc or desc)"
      * )
      *
      * @Rest\QueryParam(
      *     name="limit",
      *     requirements="\d+",
-     *     default="5",
+     *     default="30",
      *     description="Max number of products per page"
      * )
      *
@@ -78,7 +78,7 @@ class ProductController extends AbstractController
                 'products'  // xml element name
             ),
             'app_product_list', // route
-            array(), // route parameters
+            array('order' => 'desc'), // route parameters
             $pager->getCurrentPage(),       // page number
             $pager->getMaxPerPage(),      // limit
             $pager->getNbPages(),       // total pages

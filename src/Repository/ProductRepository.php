@@ -17,7 +17,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ProductRepository extends ServiceEntityRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Product::class);
@@ -25,7 +24,6 @@ class ProductRepository extends ServiceEntityRepository
 
     public function search(int $limit, string $order, int $page)
     {
-
         $qb = $this
             ->createQueryBuilder('a')
             ->select('a')
@@ -36,7 +34,6 @@ class ProductRepository extends ServiceEntityRepository
 
     protected function paginate(QueryBuilder $qb, int $limit, int $page)
     {
-
         $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
         $pager->setAllowOutOfRangePages(true);
         $pager->setCurrentPage($page);
@@ -44,24 +41,4 @@ class ProductRepository extends ServiceEntityRepository
 
         return $pager;
     }
-
-
-//    public function getList()
-//    {
-//        $queryBuilder = $this
-//            ->createQueryBuilder('a')
-//            ->select('a');
-//
-//        $adapter = new DoctrineORMAdapter($queryBuilder);
-//        $pagerfanta = new Pagerfanta($adapter);
-//
-//        $pagerfanta->setMaxPerPage(5);
-//        $pagerfanta->setCurrentPage(2);
-//
-//        dump($pagerfanta->getNbPages());
-//        dump($pagerfanta->getCurrentPage());
-//        dd($pagerfanta->getCurrentPageResults());
-//    }
-
-
 }
