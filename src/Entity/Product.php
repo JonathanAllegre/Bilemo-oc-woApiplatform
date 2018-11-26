@@ -3,19 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  *
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  *
- * @Hateoas\Relation(
- *      "self",
- *      href = @Hateoas\Route(
- *          "app_product_show",
- *          parameters = { "id" = "expr(object.getId())" }
- *      )
- * )
+ * @ORM\Table()
+ * @Hateoas\Relation("self", href = "expr('/api/products/' ~ object.getId())")
  */
 class Product
 {
@@ -53,6 +49,7 @@ class Product
     /**
      * @var
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $name;
 
