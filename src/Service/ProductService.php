@@ -59,7 +59,7 @@ class ProductService
                         $params['page']
                     );
 
-        $dataForRepresentation = [
+        $dataRepresentation = [
             'currentResults' => $pager->getCurrentPageResults(),
             'currentPage'    => $pager->getCurrentPage(),
             'maxPerPage'     => $pager->getMaxPerPage(),
@@ -67,7 +67,7 @@ class ProductService
             'nbResults'      => $pager->getNbResults(),
         ];
 
-        return $dataForRepresentation;
+        return $dataRepresentation;
     }
 
     /**

@@ -3,16 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Representation\Products;
 use App\Service\ProductService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Hateoas\Hateoas;
-use Hateoas\HateoasBuilder;
-use Hateoas\Representation\CollectionRepresentation;
-use Hateoas\Representation\PaginatedRepresentation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
