@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Representation\Products;
+use App\Service\ProductService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Hateoas\Hateoas;
@@ -58,41 +59,15 @@ class ProductController extends AbstractController
      * )
      *
      * @Rest\View()
-     *
      */
-    public function listAction(ParamFetcherInterface $paramFetcher)
+    public function listAction(ParamFetcherInterface $paramFetcher, ProductService $productService)
     {
-        $pager = $this
-            ->getDoctrine()
-            ->getRepository(Product::class)
-            ->search(
-                $paramFetcher->get('limit'),
-                $paramFetcher->get('order'),
-                $paramFetcher->get('page')
-            );
-
-        $paginatedCollection = new PaginatedRepresentation(
-            new CollectionRepresentation(
-                $pager->getCurrentPageResults(),
-                'products', // embedded rel
-                'products'  // xml element name
-            ),
-            'app_product_list', // route
-            array('order' => 'desc'), // route parameters
-            $pager->getCurrentPage(),       // page number
-            $pager->getMaxPerPage(),      // limit
-            $pager->getNbPages(),       // total pages
-            'page',  // page route parameter name, optional, defaults to 'page'
-            'limit', // limit route parameter name, optional, defaults to 'limit'
-            true,   // generate relative URIs, optional, defaults to `false`
-            $pager->getNbResults()   // total collection size, optional, defaults to `null`
-        );
+        $paginatedCollection = $productService->showProductList([
+            'limit' => $paramFetcher->get('limit'),
+            'order' => $paramFetcher->get('order'),
+            'page'  => $paramFetcher->get('page'),
+            ]);
 
         return $paginatedCollection;
-
-        //return new Products($pager);
-        //return $pager->getCurrentPageResults();
-
-        //TODO: pagination & representation
     }
 }
