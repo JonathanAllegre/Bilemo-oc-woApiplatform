@@ -94,9 +94,6 @@ class ProductService
             $data['nbResults']
         );
 
-        // TODO: Test la function get ProductListrepresentaion avec le nouvel array passé en param;
-        // TODO: Voir si pour le order on le garde dans le array en dur ou on le passe avec le queryparams ( ligne 73 )
-
         return $paginatedCollection;
     }
 }
