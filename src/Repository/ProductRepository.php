@@ -24,17 +24,17 @@ class ProductRepository extends ServiceEntityRepository
 
     public function search(int $limit, string $order, int $page)
     {
-        $qb = $this
+        $querybuilder = $this
             ->createQueryBuilder('a')
             ->select('a')
             ->orderBy('a.id', $order);
 
-        return $this->paginate($qb, $limit, $page);
+        return $this->paginate($querybuilder, $limit, $page);
     }
 
-    protected function paginate(QueryBuilder $qb, int $limit, int $page)
+    protected function paginate(QueryBuilder $querybuilder, int $limit, int $page)
     {
-        $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pager = new Pagerfanta(new DoctrineORMAdapter($querybuilder));
         $pager->setAllowOutOfRangePages(true);
         $pager->setCurrentPage($page);
         $pager->setMaxPerPage($limit);
