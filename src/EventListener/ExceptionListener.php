@@ -40,7 +40,7 @@ class ExceptionListener
                 'message' => $exception->getMessage(),
             ];
         } else {
-            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
             $message = [
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => $exception->getMessage(),
