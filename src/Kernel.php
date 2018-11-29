@@ -17,6 +17,11 @@ class Kernel extends BaseKernel
 
     public function getCacheDir()
     {
+
+        if (getenv('DEV_ENV') === 'docker') {
+            return '/dev/shm/cache-sf/'.$this->environment;
+        }
+
         return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
