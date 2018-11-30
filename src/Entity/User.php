@@ -3,9 +3,22 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
+ * @ORM\Table()
+ *  @Hateoas\Relation(
+ *     name = "self",
+ *      href = @Hateoas\Route(
+ *          "app_user_show",
+ *           parameters = { "id" = "expr(object.getId())" },
+ *           absolute = true
+ *     )
+ * )
+ *
  */
 class User
 {
@@ -35,6 +48,7 @@ class User
     private $email;
 
     /**
+     * @Serializer\Exclude()
      * @var
      * @ORM\Column(type="string", length=255)
      */

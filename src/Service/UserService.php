@@ -2,62 +2,56 @@
 /**
  * Created by PhpStorm.
  * User: jonathan
- * Date: 22/11/2018
- * Time: 07:07
+ * Date: 29/11/2018
+ * Time: 08:03
  */
 
 namespace App\Service;
 
-use App\Entity\Product;
-use App\Repository\ProductRepository;
+use App\Entity\Customer;
+use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
 
-class ProductService
+class UserService
 {
-    private $productRepository;
     private $manager;
 
-    public function __construct(
-        ProductRepository $productRepository,
-        ObjectManager $manager
-    ) {
-        $this->productRepository       = $productRepository;
-        $this->manager                 = $manager;
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
     }
 
-    /**
-     * RETURN A PAGINATED REPRESENTATION OF PRODUCTS
-     * @param array $params
-     * @return PaginatedRepresentation
-     */
-    public function showProductList(array $params):PaginatedRepresentation
+
+    public function showUserList(array $params, Customer $customer)
     {
-        // GET PRODUCTS
-        $products = $this->getProductList($params);
+        // GET USER LIST
+        $users = $this->getUserList($params, $customer);
 
         // MAKE REPRESENTATION
-        $representationList = $this->getProductListRepresentation($products);
+        $representationList = $this->getUserListRepresentation($users);
 
         return $representationList;
     }
 
     /**
-     * GET PRODUCT LIST
+     * GET USER LIST
      * @param array $params
+     * @param Customer $customer
      * @return array
      */
-    public function getProductList(array $params)
+    public function getUserList(array $params, Customer $customer)
     {
         $pager = $this
-                    ->manager
-                    ->getRepository(Product::class)
-                    ->search(
-                        $params['limit'],
-                        $params['order'],
-                        $params['page']
-                    );
+            ->manager
+            ->getRepository(User::class)
+            ->search(
+                $params['limit'],
+                $params['order'],
+                $params['page'],
+                $customer
+            );
 
         $dataRepresentation = [
             'currentResults' => $pager->getCurrentPageResults(),
@@ -75,15 +69,15 @@ class ProductService
      * @param array $data
      * @return PaginatedRepresentation
      */
-    public function getProductListRepresentation(array $data):PaginatedRepresentation
+    public function getUserListRepresentation(array $data):PaginatedRepresentation
     {
         $paginatedCollection = new PaginatedRepresentation(
             new CollectionRepresentation(
                 $data['currentResults'],
-                'products',
-                'products'
+                'users',
+                'users'
             ),
-            'app_product_list',
+            'app_user_list',
             array('order' => 'desc'),
             $data['currentPage'],
             $data['maxPerPage'],

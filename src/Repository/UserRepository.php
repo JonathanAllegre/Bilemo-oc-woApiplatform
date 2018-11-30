@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +23,25 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function search(int $limit, string $order, int $page, Customer $customer)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $querybuilder = $this
+            ->createQueryBuilder('a')
+            ->select('a')
+            ->andWhere('a.customer = ?1')
+            ->orderBy('a.id', $order)
+            ->setParameter(1, $customer->getId());
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->paginate($querybuilder, $limit, $page);
     }
-    */
+
+    protected function paginate(QueryBuilder $querybuilder, int $limit, int $page)
+    {
+        $pager = new Pagerfanta(new DoctrineORMAdapter($querybuilder));
+        $pager->setAllowOutOfRangePages(true);
+        $pager->setCurrentPage($page);
+        $pager->setMaxPerPage($limit);
+
+        return $pager;
+    }
 }
