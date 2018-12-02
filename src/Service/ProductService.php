@@ -35,7 +35,7 @@ class ProductService
      */
     public function showProductDetail(string $id)
     {
-       // GET PRODUCT
+        // GET PRODUCT
         $result = $this->productRepository->getProductdetail($id);
 
         if (null === $result) {
