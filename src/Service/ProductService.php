@@ -28,6 +28,11 @@ class ProductService
         $this->manager                 = $manager;
     }
 
+    /**
+     * RETURN PRODUCT DETAIL
+     * @param string $id
+     * @return mixed
+     */
     public function showProductDetail(string $id)
     {
        // GET PRODUCT
