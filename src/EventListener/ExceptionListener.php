@@ -39,13 +39,21 @@ class ExceptionListener
                 'code' => $exception->getStatusCode(),
                 'message' => $exception->getMessage(),
             ];
-        } else {
-            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $message = [
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => $exception->getMessage(),
-            ];
+
+            $body = $this->serializer->serialize($message, 'json');
+            $response->setContent($body);
+
+            // sends the modified response object to the event
+            $event->setResponse($response);
+
+            return;
         }
+
+        $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        $message = [
+            'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => $exception->getMessage(),
+        ];
 
         $body = $this->serializer->serialize($message, 'json');
         $response->setContent($body);
