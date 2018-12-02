@@ -33,7 +33,7 @@ class ProductController extends AbstractController
      * @Rest\QueryParam(
      *     name="order",
      *     requirements="asc|desc",
-     *     default="desc",
+     *     default="asc",
      *     description="Sort Order (asc or desc)"
      * )
      *
@@ -61,6 +61,7 @@ class ProductController extends AbstractController
             'order' => $paramFetcher->get('order'),
             'page'  => $paramFetcher->get('page'),
             ]);
+
 
         return $paginatedCollection;
     }
