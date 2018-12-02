@@ -5,13 +5,9 @@ namespace App\Repository;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Cache\Simple\ApcuCache;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,12 +17,28 @@ use Symfony\Component\Cache\Simple\ApcuCache;
  */
 class ProductRepository extends ServiceEntityRepository
 {
-    private $cache;
 
-    public function __construct(RegistryInterface $registry, CacheInterface $cache)
+    public function __construct(RegistryInterface $registry)
     {
-        $this->cache = $cache;
         parent::__construct($registry, Product::class);
+    }
+
+    /**
+     * @param string $id
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getProductdetail(string $id)
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->select('a')
+            ->andWhere('a.id = ?1')
+            ->setParameter('1', $id)
+            ->getQuery()
+            ->useResultCache(true, 3600)
+            ->getOneOrNullResult();
+
+        return $queryBuilder;
     }
 
     /**
@@ -35,7 +47,7 @@ class ProductRepository extends ServiceEntityRepository
      * @param int $page
      * @return Pagerfanta
      */
-    public function search(int $limit, string $order, int $page)
+    public function getList(int $limit, string $order, int $page)
     {
         $querybuilder = $this
             ->createQueryBuilder('a')

@@ -13,6 +13,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductService
 {
@@ -26,6 +27,19 @@ class ProductService
         $this->productRepository       = $productRepository;
         $this->manager                 = $manager;
     }
+
+    public function showProductDetail(string $id)
+    {
+       // GET PRODUCT
+        $result = $this->productRepository->getProductdetail($id);
+
+        if (null === $result) {
+            throw new NotFoundHttpException('Product not Found');
+        }
+
+        return $result;
+    }
+
 
     /**
      * RETURN A PAGINATED REPRESENTATION OF PRODUCTS
@@ -53,7 +67,7 @@ class ProductService
         $pager = $this
                     ->manager
                     ->getRepository(Product::class)
-                    ->search(
+                    ->getList(
                         $params['limit'],
                         $params['order'],
                         $params['page']

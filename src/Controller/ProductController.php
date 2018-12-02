@@ -17,11 +17,12 @@ class ProductController extends AbstractController
      *     name = "app_product_show",
      *     requirements = {"id"="\d+"}
      * )
+     *
      * @Rest\View()
      */
-    public function showAction(Product $product)
+    public function showAction(ProductService $productService, $id)
     {
-        return $product;
+        return  $productService->showProductDetail($id);
     }
 
     /**
