@@ -7,7 +7,6 @@ use App\Service\UserService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
@@ -68,5 +67,8 @@ class UserController extends AbstractController
         return $paginatedCollection;
     }
 
-    //TODO: FAIRE LES POST ET DELETE USERS
+    public function addAction()
+    {
+        //TODO: Add Action
+    }
 }

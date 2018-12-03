@@ -46,7 +46,7 @@ class UserService
         $pager = $this
             ->manager
             ->getRepository(User::class)
-            ->search(
+            ->getList(
                 $params['limit'],
                 $params['order'],
                 $params['page'],
