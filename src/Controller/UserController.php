@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\UserService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
@@ -16,7 +17,7 @@ class UserController extends AbstractController
      *     name = "app_user_show",
      *     requirements = {"id"="\d+"}
      * )
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"detail"})
      */
     public function showAction(User $user)
     {
@@ -67,8 +68,21 @@ class UserController extends AbstractController
         return $paginatedCollection;
     }
 
-    public function addAction()
+    /**
+     * @Rest\Post("/api/users")
+     * @Rest\View(StatusCode = 201, serializerGroups={"create"})
+     * @ParamConverter("user", converter="fos_rest.request_body")
+     */
+    public function addAction(User $user)
     {
-        //TODO: Add Action
+
+        $user->setCustomer($this->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($user);
+        $em->flush();
+
+        return $user;
     }
 }

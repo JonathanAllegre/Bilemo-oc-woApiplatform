@@ -16,13 +16,15 @@ use JMS\Serializer\Annotation as Serializer;
  *          "app_user_show",
  *           parameters = { "id" = "expr(object.getId())" },
  *           absolute = true
- *     )
+ *     ),
+ *     exclusion=@Hateoas\Exclusion(groups={"list", "detail"})
  * )
  *
  */
 class User
 {
     /**
+     * @Serializer\Groups({"list", "detail"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -30,25 +32,28 @@ class User
     private $id;
 
     /**
+     * @Serializer\Groups({"list", "detail"})
      * @var
      * @ORM\Column(type="string", length=255, name="first_name")
      */
     private $firstName;
 
     /**
+     * @Serializer\Groups({"list", "detail"})
      * @var
      * @ORM\Column(type="string", length=255, name="last_name")
      */
     private $lastName;
 
     /**
+     * @Serializer\Groups({"list", "detail"})
      * @var
      * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @Serializer\Exclude()
+     * @Serializer\Groups({"create"})
      * @var
      * @ORM\Column(type="string", length=255)
      */
