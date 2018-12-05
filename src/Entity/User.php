@@ -24,10 +24,11 @@ use JMS\Serializer\Annotation as Serializer;
 class User
 {
     /**
-     * @Serializer\Groups({"list", "detail"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
+     * @Serializer\Groups({"list", "detail"})
      */
     private $id;
 
@@ -62,6 +63,7 @@ class User
     private $password;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */

@@ -58,7 +58,7 @@ class UserController extends AbstractController
      *     description="The page number"
      * )
      *
-     *
+     * @Rest\View(serializerGroups={"Default", "users":{"Default", "list"}})
      */
     public function listAction(ParamFetcherInterface $paramFetcher, UserService $userService, SerializerInterface $serializer)
     {
@@ -66,17 +66,7 @@ class UserController extends AbstractController
 
         $users = $userService->showUserList($customer);
 
-
-        //$representation = new Users($users);
-
-        $data = $serializer
-            ->serialize($users, 'json', SerializationContext::create()->setGroups(array('list')));
-
-        $response = new Response($data);
-
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+       return $users;
 
 
         //TODO: PARTIR SUR DE LA NON PAGINATION
