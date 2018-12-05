@@ -16,8 +16,8 @@ use JMS\Serializer\Annotation as Serializer;
  *          "app_user_show",
  *           parameters = { "id" = "expr(object.getId())" },
  *           absolute = true
- *     ),
- *     exclusion=@Hateoas\Exclusion(groups={"list", "detail"})
+ *     )
+ *
  * )
  *
  */
@@ -33,6 +33,8 @@ class User
 
     /**
      * @Serializer\Groups({"list", "detail"})
+     * @Serializer\Expose()
+     *
      * @var
      * @ORM\Column(type="string", length=255, name="first_name")
      */

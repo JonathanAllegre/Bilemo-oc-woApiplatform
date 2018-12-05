@@ -3,11 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Representation\Users;
 use App\Service\UserService;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AbstractController
 {
@@ -52,20 +58,29 @@ class UserController extends AbstractController
      *     description="The page number"
      * )
      *
-     * @Rest\View()
+     *
      */
-    public function listAction(ParamFetcherInterface $paramFetcher, UserService $userService)
+    public function listAction(ParamFetcherInterface $paramFetcher, UserService $userService, SerializerInterface $serializer)
     {
         $customer = $this->getUser();
-        $params = [
-            'limit' => $paramFetcher->get('limit'),
-            'order' => $paramFetcher->get('order'),
-            'page'  => $paramFetcher->get('page'),
-        ];
 
-        $paginatedCollection = $userService->showUserList($params, $customer);
+        $users = $userService->showUserList($customer);
 
-        return $paginatedCollection;
+
+        //$representation = new Users($users);
+
+        $data = $serializer
+            ->serialize($users, 'json', SerializationContext::create()->setGroups(array('list')));
+
+        $response = new Response($data);
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
+
+        //TODO: PARTIR SUR DE LA NON PAGINATION
+
     }
 
     /**

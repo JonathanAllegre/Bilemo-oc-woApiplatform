@@ -13,6 +13,7 @@ use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
+use Pagerfanta\Pagerfanta;
 
 class UserService
 {
@@ -24,44 +25,18 @@ class UserService
     }
 
 
-    public function showUserList(array $params, Customer $customer)
+    public function showUserList(Customer $customer)
     {
         // GET USER LIST
-        $users = $this->getUserList($params, $customer);
-
-        // MAKE REPRESENTATION
-        $representationList = $this->getUserListRepresentation($users);
-
-        return $representationList;
-    }
-
-    /**
-     * GET USER LIST
-     * @param array $params
-     * @param Customer $customer
-     * @return array
-     */
-    public function getUserList(array $params, Customer $customer)
-    {
         $pager = $this
             ->manager
             ->getRepository(User::class)
             ->getList(
-                $params['limit'],
-                $params['order'],
-                $params['page'],
                 $customer
             );
 
-        $dataRepresentation = [
-            'currentResults' => $pager->getCurrentPageResults(),
-            'currentPage'    => $pager->getCurrentPage(),
-            'maxPerPage'     => $pager->getMaxPerPage(),
-            'nbPages'        => $pager->getNbPages(),
-            'nbResults'      => $pager->getNbResults(),
-        ];
+        return $pager;
 
-        return $dataRepresentation;
     }
 
     /**
