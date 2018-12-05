@@ -8,7 +8,6 @@
 
 namespace App\Representation;
 
-
 use JMS\Serializer\Annotation as Serializer;
 use Pagerfanta\Pagerfanta;
 
@@ -22,7 +21,6 @@ class Users
 
     public function __construct(Pagerfanta $data)
     {
-
         $this->data = $data;
 
         $this->addMeta('limit', $data->getMaxPerPage());
@@ -44,5 +42,4 @@ class Users
     {
         $this->meta[$name] = $value;
     }
-
 }

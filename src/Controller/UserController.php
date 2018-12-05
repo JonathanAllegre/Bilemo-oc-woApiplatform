@@ -3,17 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Representation\Users;
 use App\Service\UserService;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
-use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AbstractController
 {
@@ -60,17 +54,18 @@ class UserController extends AbstractController
      *
      * @Rest\View(serializerGroups={"Default", "users":{"Default", "list"}})
      */
-    public function listAction(ParamFetcherInterface $paramFetcher, UserService $userService, SerializerInterface $serializer)
+    public function listAction(ParamFetcherInterface $paramFetcher, UserService $userService)
     {
         $customer = $this->getUser();
 
-        $users = $userService->showUserList($customer);
+        $paginatedCollection = $userService->showUserList(
+            $paramFetcher->get('limit'),
+            $paramFetcher->get('order'),
+            $paramFetcher->get('page'),
+            $customer
+        );
 
-       return $users;
-
-
-        //TODO: PARTIR SUR DE LA NON PAGINATION
-
+        return $paginatedCollection;
     }
 
     /**
@@ -80,7 +75,6 @@ class UserController extends AbstractController
      */
     public function addAction(User $user)
     {
-
         $user->setCustomer($this->getUser());
 
         $em = $this->getDoctrine()->getManager();
@@ -89,5 +83,7 @@ class UserController extends AbstractController
         $em->flush();
 
         return $user;
+
+        //TODO: Refacto & add action
     }
 }

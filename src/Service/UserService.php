@@ -11,10 +11,8 @@ namespace App\Service;
 use App\Entity\Customer;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
-use Hateoas\Configuration\Exclusion;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
-use Pagerfanta\Pagerfanta;
 
 class UserService
 {
@@ -26,18 +24,28 @@ class UserService
     }
 
 
-    public function showUserList(Customer $customer)
+    public function showUserList(int $limit, string $order, int $page, Customer $customer)
     {
         // GET USER LIST
         $pager = $this
             ->manager
             ->getRepository(User::class)
             ->getList(
+                $limit,
+                $order,
+                $page,
                 $customer
             );
 
-        return $this->getUserListRepresentation($pager);
+        $dataRepresentation = [
+            'currentResults' => $pager->getCurrentPageResults(),
+            'currentPage'    => $pager->getCurrentPage(),
+            'maxPerPage'     => $pager->getMaxPerPage(),
+            'nbPages'        => $pager->getNbPages(),
+            'nbResults'      => $pager->getNbResults(),
+        ];
 
+        return $this->getUserListRepresentation($dataRepresentation);
     }
 
     /**
@@ -49,18 +57,18 @@ class UserService
     {
         $paginatedCollection = new PaginatedRepresentation(
             new CollectionRepresentation(
-                $data,
+                $data['currentResults'],
                 'users'
             ),
             'app_user_list',
             array('order' => 'desc'),
-            1,
-            5,
-            3,
+            $data['currentPage'],
+            $data['maxPerPage'],
+            $data['nbPages'],
             'page',
             'limit',
             true,
-            11
+            $data['nbResults']
         );
 
         return $paginatedCollection;
