@@ -17,7 +17,6 @@ use JMS\Serializer\Annotation as Serializer;
  *           parameters = { "id" = "expr(object.getId())" },
  *           absolute = true
  *     )
- *
  * )
  *
  */
@@ -27,29 +26,22 @@ class User
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     * @Serializer\Groups({"list", "detail"})
      */
     private $id;
 
     /**
-     * @Serializer\Groups({"list", "detail"})
-     * @Serializer\Expose()
-     *
      * @var
      * @ORM\Column(type="string", length=255, name="first_name")
      */
     private $firstName;
 
     /**
-     * @Serializer\Groups({"list", "detail"})
      * @var
      * @ORM\Column(type="string", length=255, name="last_name")
      */
     private $lastName;
 
     /**
-     * @Serializer\Groups({"list", "detail"})
      * @var
      * @ORM\Column(type="string", length=255)
      */

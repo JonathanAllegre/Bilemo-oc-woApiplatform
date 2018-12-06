@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Service\UserService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use Psr\SimpleCache\CacheInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends AbstractController
 {
@@ -17,10 +19,17 @@ class UserController extends AbstractController
      *     name = "app_user_show",
      *     requirements = {"id"="\d+"}
      * )
-     * @Rest\View(serializerGroups={"detail"})
+     * @Rest\View(serializerGroups={"Default", "users":{"Default"}})
      */
-    public function showAction(User $user)
+    public function showAction(User $user, UserService $userService)
     {
+        $customer       = $this->getUser();
+        $representation = $userService->isUserHadCurrentCustomer($user, $customer);
+
+        if (false === $representation) {
+            throw new NotFoundHttpException('User not Found');
+        }
+
         return $user;
     }
 
@@ -52,7 +61,7 @@ class UserController extends AbstractController
      *     description="The page number"
      * )
      *
-     * @Rest\View(serializerGroups={"Default", "users":{"Default", "list"}})
+     * @Rest\View(serializerGroups={"Default", "users":{"Default"}})
      */
     public function listAction(ParamFetcherInterface $paramFetcher, UserService $userService)
     {
@@ -69,7 +78,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Rest\Post("/api/users")
+     * @Rest\Post("/api/users", name="app_user_add")
      * @Rest\View(StatusCode = 201, serializerGroups={"create"})
      * @ParamConverter("user", converter="fos_rest.request_body")
      */
@@ -82,8 +91,8 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        return $user;
+        return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
 
-        //TODO: Refacto & add action
+        //TODO: Validation
     }
 }

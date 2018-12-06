@@ -13,6 +13,7 @@ use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
+use Hateoas\Representation\RouteAwareRepresentation;
 
 class UserService
 {
@@ -23,8 +24,29 @@ class UserService
         $this->manager = $manager;
     }
 
+    /**
+     * CHECK IF USER HAD CURRENT CUSTOMER
+     * @param User $user
+     * @param Customer $customer
+     * @return bool
+     */
+    public function isUserHadCurrentCustomer(User $user, Customer $customer):bool
+    {
+        if ($user->getCustomer()->getId() === $customer->getId()) {
+            return true;
+        }
 
-    public function showUserList(int $limit, string $order, int $page, Customer $customer)
+        return false;
+    }
+
+    /**
+     * @param int $limit
+     * @param string $order
+     * @param int $page
+     * @param Customer $customer
+     * @return PaginatedRepresentation
+     */
+    public function showUserList(int $limit, string $order, int $page, Customer $customer):PaginatedRepresentation
     {
         // GET USER LIST
         $pager = $this

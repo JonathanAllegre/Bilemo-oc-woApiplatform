@@ -23,6 +23,8 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+
+
     public function getList(int $limit, string $order, int $page, Customer $customer)
     {
         $querybuilder = $this
@@ -31,8 +33,8 @@ class UserRepository extends ServiceEntityRepository
             ->andWhere('a.customer = ?1')
             ->orderBy('a.id', $order)
             ->setParameter(1, $customer->getId())
-            ->getQuery()
-            ->useResultCache(true, 3600);
+            ->getQuery();
+            //->useResultCache(true, 3600, 'list_user');
 
         return $this->paginate($querybuilder, $limit, $page);
     }
