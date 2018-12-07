@@ -13,7 +13,6 @@ use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
-use Hateoas\Representation\RouteAwareRepresentation;
 
 class UserService
 {
@@ -40,7 +39,7 @@ class UserService
      */
     public function addUser(User $user, Customer $customer):void
     {
-        $user->setCustomer($this->getUser());
+        $user->setCustomer($customer);
         $this->manager->persist($user);
         $this->manager->flush();
     }
