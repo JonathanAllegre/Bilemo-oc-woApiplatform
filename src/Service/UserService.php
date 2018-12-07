@@ -25,6 +25,18 @@ class UserService
     }
 
     /**
+     * ADD USER
+     * @param User $user
+     * @param Customer $customer
+     */
+    public function addUser(User $user, Customer $customer)
+    {
+        $user->setCustomer($this->getUser());
+        $this->manager->persist($user);
+        $this->manager->flush();
+    }
+
+    /**
      * CHECK IF USER HAD CURRENT CUSTOMER
      * @param User $user
      * @param Customer $customer

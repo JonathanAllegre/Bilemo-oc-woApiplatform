@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -32,30 +33,33 @@ class User
     /**
      * @var
      * @ORM\Column(type="string", length=255, name="first_name")
+     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @var
      * @ORM\Column(type="string", length=255, name="last_name")
+     * @Assert\NotBlank()
      */
     private $lastName;
 
     /**
      * @var
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
-     * @Serializer\Groups({"create"})
      * @var
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Groups({"create"})
+     * @Assert\NotBlank()
      */
     private $password;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */

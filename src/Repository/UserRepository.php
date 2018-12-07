@@ -34,7 +34,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('a.id', $order)
             ->setParameter(1, $customer->getId())
             ->getQuery();
-            //->useResultCache(true, 3600, 'list_user');
+        //->useResultCache(true, 3600, 'list_user');
 
         return $this->paginate($querybuilder, $limit, $page);
     }
