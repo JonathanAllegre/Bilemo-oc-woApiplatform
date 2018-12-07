@@ -25,11 +25,20 @@ class UserService
     }
 
     /**
+     * @param User $user
+     */
+    public function deleteUser(User $user):void
+    {
+        $this->manager->remove($user);
+        $this->manager->flush();
+    }
+
+    /**
      * ADD USER
      * @param User $user
      * @param Customer $customer
      */
-    public function addUser(User $user, Customer $customer)
+    public function addUser(User $user, Customer $customer):void
     {
         $user->setCustomer($this->getUser());
         $this->manager->persist($user);

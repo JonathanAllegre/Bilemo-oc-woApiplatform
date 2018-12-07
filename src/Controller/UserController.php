@@ -100,4 +100,26 @@ class UserController extends FOSRestController
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
     }
+
+    /**
+     * @Rest\Delete(
+     *     path = "/api/users/{id}",
+     *     name = "app_user_delete",
+     *     requirements = {"id"="\d+"}
+     * )
+     * @Rest\View(StatusCode = 200)
+     */
+    public function deleteAction(User $user, UserService $userService)
+    {
+        if (!$userService->isUserHadCurrentCustomer($user, $this->getUser())) {
+            throw new NotFoundHttpException('User not Found');
+        }
+
+        $userService->deleteUser($user);
+
+        return [
+            'code'    => Response::HTTP_OK,
+            'message' => "User Deleted",
+        ];
+    }
 }
