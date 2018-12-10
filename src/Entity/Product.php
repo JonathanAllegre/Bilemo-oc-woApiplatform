@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Swagger\Annotations as SWG;
 
 /**
  *
+ * @SWG\Definition()
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  *
  * @ORM\Table()
@@ -30,6 +32,7 @@ class Product
     private $id;
 
     /**
+     * @SWG\Property()
      * @var
      * @ORM\Column(type="datetime")
      */
