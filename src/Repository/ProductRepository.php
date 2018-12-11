@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -22,17 +22,43 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function search(int $limit, string $order, int $page)
+    /**
+     * @param string $productId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getProductdetail(string $productId)
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->select('a')
+            ->andWhere('a.id = ?1')
+            ->setParameter('1', $productId)
+            ->getQuery()
+            ->useResultCache(true, 3600)
+            ->getOneOrNullResult();
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param int $limit
+     * @param string $order
+     * @param int $page
+     * @return Pagerfanta
+     */
+    public function getList(int $limit, string $order, int $page)
     {
         $querybuilder = $this
             ->createQueryBuilder('a')
             ->select('a')
-            ->orderBy('a.id', $order);
+            ->orderBy('a.id', $order)
+            ->getQuery()
+            ->useResultCache(true, 3600, 'product_result');
 
         return $this->paginate($querybuilder, $limit, $page);
     }
 
-    protected function paginate(QueryBuilder $querybuilder, int $limit, int $page)
+    protected function paginate(Query $querybuilder, int $limit, int $page)
     {
         $pager = new Pagerfanta(new DoctrineORMAdapter($querybuilder));
         $pager->setAllowOutOfRangePages(true);

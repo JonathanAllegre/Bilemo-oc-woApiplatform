@@ -3,9 +3,31 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
+ * @ORM\Table()
+ *  @Hateoas\Relation(
+ *     name = "self",
+ *      href = @Hateoas\Route(
+ *          "app_user_show",
+ *           parameters = { "id" = "expr(object.getId())" },
+ *           absolute = true
+ *     )
+ * )
+ * @Hateoas\Relation(
+ *     name = "list",
+ *      href = @Hateoas\Route(
+ *          "app_user_list",
+ *           absolute = true
+ *
+ *     )
+ * )
+ *
  */
 class User
 {
@@ -19,24 +41,29 @@ class User
     /**
      * @var
      * @ORM\Column(type="string", length=255, name="first_name")
+     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @var
      * @ORM\Column(type="string", length=255, name="last_name")
+     * @Assert\NotBlank()
      */
     private $lastName;
 
     /**
      * @var
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @var
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Groups({"create"})
+     * @Assert\NotBlank()
      */
     private $password;
 
