@@ -30,13 +30,13 @@ class ProductService
 
     /**
      * RETURN PRODUCT DETAIL
-     * @param string $id
+     * @param string $productId
      * @return mixed
      */
-    public function showProductDetail(string $id)
+    public function showProductDetail(string $productId)
     {
         // GET PRODUCT
-        $result = $this->productRepository->getProductdetail($id);
+        $result = $this->productRepository->getProductdetail($productId);
 
         if (null === $result) {
             throw new NotFoundHttpException('Product not Found');

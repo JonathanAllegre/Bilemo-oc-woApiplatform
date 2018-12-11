@@ -17,7 +17,7 @@ use Swagger\Annotations as SWG;
  *     name = "self",
  *      href = @Hateoas\Route(
  *          "app_product_show",
- *           parameters = { "id" = "expr(object.getId())" },
+ *           parameters = { "productId" = "expr(object.getId())" },
  *           absolute = true
  *     )
  * )

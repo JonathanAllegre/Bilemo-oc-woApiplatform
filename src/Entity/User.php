@@ -19,6 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *           absolute = true
  *     )
  * )
+ * @Hateoas\Relation(
+ *     name = "list",
+ *      href = @Hateoas\Route(
+ *          "app_user_list",
+ *           absolute = true
+ *
+ *     )
+ * )
  *
  */
 class User

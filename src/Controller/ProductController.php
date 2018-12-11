@@ -43,16 +43,16 @@ class ProductController extends AbstractController
      *     )
      * )
      * @Rest\Get(
-     *     path = "/api/products/{id}",
+     *     path = "/api/products/{productId}",
      *     name = "app_product_show",
-     *     requirements = {"id"="\d+"}
+     *     requirements = {"productId"="\d+"}
      * )
      *
      * @Rest\View()
      */
-    public function showAction(ProductService $productService, $id)
+    public function showAction(ProductService $productService, $productId)
     {
-        return  $productService->showProductDetail($id);
+        return  $productService->showProductDetail($productId);
     }
 
     /**

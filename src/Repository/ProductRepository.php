@@ -23,16 +23,16 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $id
+     * @param string $productId
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getProductdetail(string $id)
+    public function getProductdetail(string $productId)
     {
         $queryBuilder = $this->createQueryBuilder('a')
             ->select('a')
             ->andWhere('a.id = ?1')
-            ->setParameter('1', $id)
+            ->setParameter('1', $productId)
             ->getQuery()
             ->useResultCache(true, 3600)
             ->getOneOrNullResult();
