@@ -28,7 +28,40 @@ class UserController extends FOSRestController
      *          @Model(
      *              type=User::class
      *          )
-     *     )
+     *     ),
+     *     @SWG\Response(
+     *          response=404,
+     *          description="Not Found",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=404
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="User Not Found"
+     *              )
+     *          )
+     *     ),
+     *      @SWG\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=401
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example={"Expired JWT Token", "Invalid JWT Token"}
+     *              )
+     *          )
+     *     ),
+     *
      * )
      *
      * @Rest\Get(
