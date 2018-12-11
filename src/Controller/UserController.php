@@ -26,7 +26,8 @@ class UserController extends FOSRestController
      *          response=200,
      *          description="Success",
      *          @Model(
-     *              type=User::class
+     *              type=User::class,
+     *              groups={"Default", "users":{"Default"}}
      *          )
      *     ),
      *     @SWG\Response(
@@ -61,7 +62,6 @@ class UserController extends FOSRestController
      *              )
      *          )
      *     ),
-     *
      * )
      *
      * @Rest\Get(
@@ -84,6 +84,37 @@ class UserController extends FOSRestController
     }
 
     /**
+     * @SWG\Get(
+     *     tags={"User"},
+     *     summary="Get the list of users",
+     *     description="Return a paginated collection os users",
+     *     @SWG\Response(
+     *          response=200,
+     *          description="Success",
+     *          @SWG\Schema(
+     *              @Model(
+     *                  type=User::class,
+     *                  groups={"Default", "users":{"Default"}}
+     *              )
+     *          )
+     *     ),
+     *     @SWG\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=401
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example={"Expired JWT Token", "Invalid JWT Token"}
+     *              )
+     *          )
+     *     )
+     * )
      * @Rest\Get(
      *     path = "/api/users",
      *     name = "app_user_list",
@@ -150,6 +181,43 @@ class UserController extends FOSRestController
     }
 
     /**
+     * @SWG\Delete(
+     *     tags={"User"},
+     *     summary="Delete an user",
+     *     description="Delete an user by Id",
+     *     @SWG\Response(
+     *          response=200,
+ *              description="Success",
+     *          @SWG\Schema(
+     *               @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=200
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="User Deleted"
+     *              )
+     *          )
+     *     ),
+     *     @SWG\Response(
+     *          response=404,
+     *          description="Not Found",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=404
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="User Not Found"
+     *              )
+     *          )
+     *     )
+     * )
      * @Rest\Delete(
      *     path = "/api/users/{id}",
      *     name = "app_user_delete",
