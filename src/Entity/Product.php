@@ -15,7 +15,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *     name = "self",
  *      href = @Hateoas\Route(
  *          "app_product_show",
- *           parameters = { "id" = "expr(object.getId())" },
+ *           parameters = { "productId" = "expr(object.getId())" },
  *           absolute = true
  *     )
  * )
