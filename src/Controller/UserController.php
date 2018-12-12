@@ -159,6 +159,76 @@ class UserController extends FOSRestController
     }
 
     /**
+     * @SWG\Post(
+     *     tags={"User"},
+     *     summary="Add User",
+     *     description="Add an User",
+     *     @SWG\Parameter(
+     *          in="body",
+     *          required=true,
+     *          name="body",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="last_name",
+     *                  type="string",
+     *                  example="Durand"
+     *              ),
+     *              @SWG\Property(
+     *                  property="first_name",
+     *                  type="string",
+     *                  example="Martin"
+     *              ),
+     *              @SWG\Property(
+     *                  property="email",
+     *                  type="string",
+     *                  example="martin@durand.hotmail.com"
+     *              ),
+     *              @SWG\Property(
+     *                  property="password",
+     *                  type="string",
+     *                  example="le-password"
+     *              )
+     *          )
+     *     ),
+     *     @SWG\Response(
+     *          response=201,
+     *          description="Created",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=201
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="User created"
+     *              ),
+     *              @SWG\Property(
+     *                  property="url",
+     *                  type="string",
+     *                  example="http://bilemo.com/api/users/{userCreatedId}"
+     *              )
+     *          )
+     *      ),
+     *      @SWG\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @SWG\Schema(
+     *              @SWG\Property(
+     *                  property="code",
+     *                  type="integer",
+     *                  example=401
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example={"Expired JWT Token", "Invalid JWT Token"}
+     *              )
+     *          )
+     *     )
+     *
+     * )
      * @Rest\Post("/api/users", name="app_user_add")
      * @Rest\View(StatusCode = 201, serializerGroups={"create"})
      * @ParamConverter("user", converter="fos_rest.request_body")
