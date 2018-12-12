@@ -15,10 +15,6 @@ nelmio_api_doc:
     security:
     -
       Bearer: []
-    tags:
-    -
-      name: Product
-      description: 'Manage Product'
     paths:
       /api/login_check:
         post:
@@ -73,4 +69,6 @@ nelmio_api_doc:
 
   areas:
     path_patterns:
-      - '^/api(?!/doc$)'
+      - /api/users
+      - /api/products
+    host_patterns :
