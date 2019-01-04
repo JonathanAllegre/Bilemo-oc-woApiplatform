@@ -36,3 +36,5 @@ doctrine:
         query_cache_driver: apcu
         second_level_cache:
             enabled: true
+
+nelmio_api_doc: ~

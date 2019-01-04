@@ -1,0 +1,74 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: 'Bilemo - OC'
+      description: 'Mobil Catalog'
+      version: 1.0.0
+      contact:
+        email: jonathan@monmail.fr
+    securityDefinitions:
+      Bearer:
+        type: apiKey
+        description: 'Value: Bearer {jwt}'
+        name: Authorization
+        in: header
+    security:
+    -
+      Bearer: []
+    paths:
+      /api/login_check:
+        post:
+          tags:
+          - Security
+          summary: Login
+          description: 'Return api key'
+          parameters:
+          -
+            in: body
+            name: body
+            required: true
+            schema:
+              type: string
+              properties:
+                username:
+                  type: object
+                  example: Martin
+                password:
+                  type: string
+                  example: admin
+          responses:
+            '200':
+              description: successful operation
+              schema:
+                type: object
+                properties:
+                  token:
+                    example: jwtToken
+            '401':
+              description: Unauthorized
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: Bad credentials
+            '400':
+              description: Bad Request
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid JSON
+
+  areas:
+    path_patterns:
+      - /api/users
+      - /api/products
+    host_patterns :
