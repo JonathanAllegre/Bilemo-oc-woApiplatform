@@ -1,5 +1,7 @@
 # Bilemo-OC -- How to Install  
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/da73abd554cc4b2eb11be692546dfe5f)](https://app.codacy.com/app/JonathanAllegre/Bilemo-oc-woApiplatform?utm_source=github.com&utm_medium=referral&utm_content=JonathanAllegre/Bilemo-oc-woApiplatform&utm_campaign=Badge_Grade_Settings)
+
 The 7th project of the OpenClassRoom training: PHP / Symfony application developer  
 
 ## Getting Started  
